@@ -1,5 +1,4 @@
-Instructions
-How To Deep Copy a Sheet + Form + Script
+# How To Deep Copy a Sheet + Form + Script
 
 Copy the Form first
 1. Find and open the original Form (not the sheet or the program)
