@@ -8,6 +8,10 @@ PHP Mailer backend for facilitating the sending of emails between Code Club part
 PHP search utility that enables club and volunteer search.
 This lets query to the google sheet take place in the backend, to avoid exposing email addresses and other sensitive data
 
+## Deployment
+
+Deploy anywhere that runs php. I recommend Digital Ocean $5/mo small droplets if traffic is not expected to be significant
+
 ## What else?
 
 I acknowledge that there are terrible bits within the code enclosed - there is much to be improved. Such is the nature of volunteer projects.

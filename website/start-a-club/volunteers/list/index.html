@@ -1,0 +1,91 @@
+---
+layout: default
+title: Volunteers List
+---
+
+<div class="row">
+	<div class="twelve columns">
+		<h1 style="display: inline-block; float:left;">Find volunteers in</h1>
+		<select style="display:inline-block; width: 200px; float:left; margin-top: 19px;
+margin-left: 15px;" id="region-select" name="search">
+			<option selected="selected"></option>
+			<option id="placeholder">-- Select Region --</option>
+			<option id="northland" value="Northland">Northland</option>
+			<option id="auckland" value="Auckland">Auckland</option>
+			<option id="waikato" value="Waikato">Waikato</option>
+			<option id="bay_of_plenty" value="Bay of Plenty">Bay of Plenty</option>
+			<option id="gisborne" value="Gisborne">Gisborne</option>
+			<option id="hawkes_bay" value="Hawke's Bay">Hawke's Bay</option>
+			<option id="taranaki" value="Taranaki">Taranaki</option>
+			<option id="manawatu-whanganui" value="Manawatu-Whanganui">Manawatu-Whanganui</option>
+			<option id="wellington" value="Wellington">Wellington</option>
+			<option id="tasman" value="Tasman">Tasman</option>
+			<option id="nelson" value="Nelson">Nelson</option>
+			<option id="marlborough" value="Marlborough">Marlborough</option>
+			<option id="west_coast" value="West Coast">West Coast</option>
+			<option id="canterbury" value="Canterbury">Canterbury</option>
+			<option id="otago" value="Otago">Otago</option>
+			<option id="southland" value="Southland">Southland</option>
+		</select>
+		<span class="instead">Looking for <a href="/start-a-club/venues/list/?r=">venues</a> instead?</span>
+		<hr>
+		<div id="loader" style="display: none; background: url(http://www.codeclub.nz/img/loader.gif);height:24px;width:24px;margin: 0 auto;"></div>
+		<div id="region-placeholder" style="display:none;color:#AFAFAF;text-align:center;font-size:22px;">Select a region from the list above</div>
+		<div id="table-div" style="display:none;">
+		<table id="sheetrock-table" class="table table-condensed table-striped" style="width:100%;">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Suburb</th>
+					<th>City</th>
+					<th>Region</th>
+					<th>Email Address</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr class="placeholder">
+				<td colspan="5" style="text-align:center; padding: 20px; font-size: 15px;">No volunteers in <strong id="strong-placeholder"></strong> yet. Be the first by <a href="/start-a-club/volunteers/">registering as a volunteer</a>.</td>
+			</tr>
+			<script id="hr-template" type="text/x-handlebars-template">
+				<tr>
+					<td>{% raw %} {{FirstName}} {% endraw %} {% raw %} {{LastName}} {% endraw %}</td>
+					<td>{% raw %} {{Suburb}} {% endraw %}</td>
+					<td>{% raw %} {{City}} {% endraw %}</td>
+					<td>{% raw %} {{Region}} {% endraw %}</td>
+					<td><a href="#ajax-form" id="contact-button" data-id="{% raw %}{{ID}}{% endraw %}" class="button round primary fancybox-button">Email this Volunteer</a></td>
+				</tr>
+  			</script>
+  			</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+
+<div id="ajax-form" style="display:none; min-width:600px; min-height: 500px; position: relative;">
+<div id="contact-form-loading" style="display: none; position:absolute; top: 50%; left: 50%;">
+	<img src="http://www.codeclub.nz/img/loader.gif">
+</div>
+<div id="contact-form-notice" style="display: none; position:absolute; top: 50%;">
+	<p style="width: 600px; text-align:center;"><strong>Your message has been sent successfully!</strong></p>
+</div>
+<form id="contact-form" class="contact-form" method="post" data-success="Message successfully sent!" style="margin:0;">
+
+  <label for="name">Your Name *</label>
+  <input id="name" type="text" name="name" class="field" required autofocus /><br/>
+
+  <label for="email">Your E-mail Address *</label>
+  <input id="email" type="email" name="email" class="field" required /><br/>
+
+  <label for="subject">Your Mobile Phone</label>
+  <input id="subject" type="text" name="mobile_phone" class="field" required /><br/>
+
+  <label for="message">Your Enquiry *</label>
+  <textarea id="message" name="message" rows="6" required ></textarea><br/>
+
+  <button type="submit" class="round button primary">Send</button>
+
+  <input type="hidden" id="form-id" name="id">
+  <input type="hidden" name="form" value="volunteers">
+</form>
+
+</div>

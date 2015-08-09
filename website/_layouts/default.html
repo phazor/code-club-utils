@@ -1,0 +1,214 @@
+<!--
+This code is the main block that loads (and executes) the list functionality
+As mentioned in the README.md, a bunch of this code would be much cleaner in a script that is only loaded and executed into the pages that need it, rather than on the $("document").ready() function.
+-->
+
+<!-- Imports -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/parsley.js/1.1.16/parsley.min.js"></script>
+<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="/js/libs/infobox.js"></script>
+<script src="/js/libs/jquery.serialize-hash.js"></script>
+<script src="/js/libs/marker-clusterer.js"></script>
+<script src="/js/app.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
+
+<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="http://HOSTNAME-GOES-HERE/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="http://HOSTNAME-GOES-HERE/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+
+<!-- Load Sheetrock. Note: It is advised to host file this yourself, as it has been known to change location -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-sheetrock/0.3.0/dist/jquery.sheetrock.min.js"></script>
+
+<script type="text/javascript">
+
+      $("document").ready(function(){
+
+          $("a.fancybox-button").fancybox({
+            beforeShow   : function() {
+              var $self = $(this.element);
+              $("#form-id").val($self.data("id"));
+            }
+          });
+
+          $(function(){
+            $("#contact-form").submit(function(e){
+              e.preventDefault();
+              $("#contact-form").fadeOut("300", function() {
+                $("#contact-form-loading").fadeIn("100");
+              });
+              $.ajax({
+                url: 'http://SERVER-HOST-IP-GOES-HERE/codeclub-mailer/mailer.php',
+                type: 'post',
+                data: $(this).serialize(),
+                success: function(data, status) {
+                  $("#contact-form-loading").fadeOut("300", function() {
+                    $("#contact-form-notice").fadeIn("100", function(){
+                      setTimeout(function(){
+                         window.location.reload(1);
+                      }, 3000);
+                    });
+                  });
+                },
+                error: function(xhr, desc, err) {
+                  console.log(xhr);
+                  console.log("Details: " + desc + "\nError:" + err);
+                }
+              }); // end ajax call
+            });
+
+      });
+      });
+
+        function escapeHtml(text) {
+          var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+          };
+
+          return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+
+        function getQueryVariable(variable)
+        {
+               var query = window.location.search.substring(1);
+               var vars = query.split("&");
+               for (var i=0;i<vars.length;i++) {
+                       var pair = vars[i].split("=");
+                       if(pair[0] == variable){return pair[1];}
+               }
+               return(false);
+        }
+
+      $(window).load(function(){
+
+        function showTable() {
+          if($("#sheetrock-table tr").length > 2) {
+            $("#sheetrock-table tr.placeholder").hide(function() {
+              $( "#loader" ).fadeOut( "slow", function() {
+                $("#table-div").fadeIn("slow");
+              });
+            });
+          } else {
+             $("#sheetrock-table thead").hide(function() {
+              $( "#loader" ).fadeOut( "slow", function() {
+                $("#table-div").fadeIn("slow");
+              });
+            });
+          }
+        }
+
+      var loc = window.location.pathname;
+      var dir = loc.substring(0, loc.lastIndexOf('/'));
+
+      // Set the Title according to Region
+      var searchRegion = escapeHtml(getQueryVariable("r"));
+
+      var searchRegion = decodeURI(searchRegion);
+
+      $("#strong-placeholder").text(searchRegion);
+
+      var _href = $("span.instead a").attr("href");
+      $("span.instead a").attr("href", _href + searchRegion);
+
+      if (searchRegion == '') { $("option#placeholder").prop('selected', true); }
+
+      if (searchRegion == 'Northland') { $("option#northland").prop('selected', true); }
+      if (searchRegion == 'Auckland') { $("option#auckland").prop('selected', true); }
+      if (searchRegion == 'Waikato') { $("option#waikato").prop('selected', true); }
+      if (searchRegion == 'Bay of Plenty') { $("option#bay_of_plenty").prop('selected', true); }
+      if (searchRegion == 'Gisborne') { $("option#gisborne").prop('selected', true); }
+      if (searchRegion == "Hawke's Bay") { $("option#hawkes_bay").prop('selected', true); }
+      if (searchRegion == 'Taranaki') { $("option#taranaki").prop('selected', true); }
+      if (searchRegion == 'Manawatu-Whanganui') { $("option#manawatu-whanganui").prop('selected', true); }
+      if (searchRegion == 'Wellington') { $("option#wellington").prop('selected', true); }
+      if (searchRegion == 'Tasman') { $("option#tasman").prop('selected', true); }
+      if (searchRegion == 'Nelson') { $("option#nelson").prop('selected', true); }
+      if (searchRegion == 'Marlborough') { $("option#marlborough").prop('selected', true); }
+      if (searchRegion == 'West Coast') { $("option#west_coast").prop('selected', true); }
+      if (searchRegion == 'Canterbury') { $("option#canterbury").prop('selected', true); }
+      if (searchRegion == 'Otago') { $("option#otago").prop('selected', true); }
+      if (searchRegion == 'Southland') { $("option#southland").prop('selected', true); }
+
+
+      $( "select#region-select" ).change(function() {
+        window.location = "?r=" + $(this).val();
+      });
+
+      if (searchRegion != '') {
+
+        $( "#loader" ).fadeIn("slow");
+        var url = 'http://SERVER-HOST-IP-GOES-HERE/codeclub-mailer/start-a-club.php';
+
+        // Check if Volunteers or Venues
+        if (dir == '/start-a-club/volunteers/list') {
+
+          $.getJSON(url, {
+            form: 'volunteers',
+            searchRegion: searchRegion,
+          })
+          .done(function(data, index){
+            var cells = [];
+            var dataArray = data.table.rows.map(function(row) {
+              return row.c;
+            }).map(function(column, i) {
+              cells[i] = {};
+              cells[i].ID = column[0].v;
+              cells[i].FirstName = column[1].v;
+              cells[i].LastName = column[2].v;
+              cells[i].Region = column[3].v;
+              cells[i].City = column[4].v;
+              cells[i].Suburb = column[5].v;
+            });
+            var HRTemplate = Handlebars.compile($('#hr-template').html());
+            $.each(cells, function(index, cell) {
+              html = HRTemplate(cell);
+              $("#sheetrock-table > tbody").append(html);
+            });
+            showTable();
+          });
+
+        }
+
+        if (dir == '/start-a-club/venues/list') {
+          $.getJSON(url, {
+            form: 'venues',
+            searchRegion: searchRegion,
+          })
+          .done(function(data, index){
+            var cells = [];
+            var dataArray = data.table.rows.map(function(row) {
+              return row.c;
+            }).map(function(column, i) {
+              cells[i] = {};
+              cells[i].ID = column[0].v;
+              cells[i].FirstName = column[1].v;
+              cells[i].LastName = column[2].v;
+              cells[i].Region = column[3].v;
+              cells[i].VenueName = column[4].v;
+              cells[i].VenueType = column[5].v;
+              cells[i].City = column[6].v;
+              cells[i].Suburb = column[7].v;
+            });
+            var HRTemplate = Handlebars.compile($('#hr-template').html());
+            $.each(cells, function(index, cell) {
+              html = HRTemplate(cell);
+              $("#sheetrock-table > tbody").append(html);
+            });
+            showTable();
+          });
+        }
+
+      } else {
+        $( "#region-placeholder" ).fadeIn("slow");
+      }
+
+    });
+
+</script>
