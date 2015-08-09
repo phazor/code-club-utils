@@ -8,11 +8,35 @@ This code adds auto-reply functionality for signups to the website. Website sign
 
 ## Set Up
 
-### Set up your sheet.
+### Set up your form/sheet.
+
+This scripts require a venues form and a volunteers form to be set up with (at least) the following fields. You may wish to add more.
+
+For Venues:
+* First Name
+* Last Name
+* Email address
+* Venue name
+* Venue Type (School, Library, IT Company, Other)
+* Address
+* City
+* Suburb
+* Region
+
+For Volunteers
+* First Name
+* Last Name
+* City
+* Suburb
+* Region
+* Email address
+
 
 ### Set up your script
 
-This was done by following the tutorial from: https://developers.google.com/apps-script/articles/sending_emails
+There are two forms (one for volunteers, one for venues), so therefore there are two scripts that need to be created.
+
+Scripts were created by following the tutorial from: https://developers.google.com/apps-script/articles/sending_emails
 
 Before you start: ensure that you are logged in as the email address that you want to have the emails sent from. This is important because script owners can’t be changed after creation, without deleting the script and starting again.
 1. Open your Venues/Volunteers sheet
